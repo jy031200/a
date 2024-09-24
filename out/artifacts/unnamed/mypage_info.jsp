@@ -126,12 +126,15 @@
 </head>
 <body>
 <% User user = (User) request.getAttribute("user");
-    System.out.println("User object in JSP2: " + user);
+    System.out.println("User object in mypage_info: " + user);
     if(user != null){
 
 %>
 <div class="myinfo-container">
-    <a href="${pageContext.request.contextPath}/main.jsp">&lt;</a>
+    <form action="mypage" method="get">
+        <%--<a href="${pageContext.request.contextPath}/mypage.jsp">&lt;</a>--%>
+        <input type="submit" id="btn_info" value="&lt;">
+    </form>
     <h2>내 정보 관리</h2>
     <div class="myname">
         <p id="name"> ${user.NAME}</p>

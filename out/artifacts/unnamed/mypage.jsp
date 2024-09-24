@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
-         import="dto.User, Controller.UserController, dao.UserDAO"%>
+         import="dto.User,controller.UserController, dao.UserDAO"%>
 <%@ page import="java.util.List" %>
 <!DOCTYPE html>
 <html>
@@ -52,14 +52,14 @@
 <body>
 <%
     User user = (User) request.getAttribute("user");
-    System.out.println("User object in JSP: " + user);
+    System.out.println("User object in mypage: " + user);
     if (user != null) {
 %>
 <div class="mypage-container">
     <p id="name">${user.NAME}</p>
     <hr>
     <div class="myinfo-container">
-        <form action="search_history" method="post">
+        <form action="mypage_info" method="get">
             <input type="submit" id="btn_info" value="내 정보">
         </form>
         <input type="submit" id="btn_post" value="내 판매글">

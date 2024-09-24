@@ -1,11 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
-         import="dto.User,dto.Searchhistory"%>
+         import="dto.Searchhistory,dto.Searchhistory"%>
+<%@ page import="com.google.gson.Gson" %>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <title>온라인 커머스</title>
-    <script src="/resource/js/index.js" defer></script>
+    <script src="/resource/js/index.js" defer>
+        var searchHistoryData = <%= (request.getAttribute("searchHistoryList") != null)
+        ? new Gson().toJson(request.getAttribute("searchHistoryList"))
+        : "[]" %>;
+
+    </script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -55,6 +61,56 @@
             width: 370px;
             background-color: white;
         }
+
+
+        .search-history { /*검색 기록 창*/
+            display: none;
+            width: 325px;
+            max-height: 500px;
+            min-height: 100px;
+            position: absolute;
+            text-align: left;
+            background-color: white;
+            border: 1px solid #ddd;
+            margin-left: 25px;
+            overflow-y: auto;
+            z-index: 1000;
+
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+       #current_text {
+            font-size: 15px;
+        }
+
+        .search-history option { /*검색 기록 칸*/
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+            height: 30px;
+            color: olivedrab;
+            padding-top: 10px;
+            padding-bottom: -10px;
+            padding-left: 60px;
+        }
+        .search-history option:hover {
+            background-color: lightgray;
+        }
+        .search-history img {
+            width: 10px;
+            height: 10px;
+            margin-left: 10px;
+        }
+        #btn_del {
+            width: 100px;
+            font-size: 13px;
+            border: none;
+            outline: none;
+            background-color: white;
+            margin-left: 65%;
+        }
+
+
+
         .search-container input[type="text"] {
             width: 270px;
             height: 40px;
@@ -74,6 +130,7 @@
             background-color: white;
             margin-top: 1px;
             border: none;
+            text-decoration: none;
         }
         .search-container img {
             width: 30px;
@@ -136,6 +193,55 @@
         .pagination a:hover {
             background-color: #ddd;
         }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .history-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .delete-btn {
+            background-color: transparent;
+            border: none;
+            color: red;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        #search-history {
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+        }
+
+        .btn_CreatePost {
+            display: flex;
+            position: sticky;
+            width: 100px;
+            height: 50px;
+            bottom: 20px;
+            right: 50px;
+            background-color: cornflowerblue;
+            border-radius: 25px;
+            margin-left: auto;
+        }
+        .text_CreatePost {
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+            text-align: center;
+            margin-left: 7px;
+            margin-top: 9px;
+        }
+
     </style>
 </head>
 <body>
@@ -148,10 +254,13 @@
     </div>
 </header>
 
-<div class="search-container">
-    <form action="search_history" method="post"> <%-- id는 html,css에서 구분, namedms 서블릿에서 구분--%>
-        <input type="text" id="search_text" name="search_text" placeholder="찾으시는 상품을 검색해보세요!">
-        <button type="submit" id="btn_search"> <%-- 검색기록 저장 및 페이지 이동--%>
+<div class="search-container" style="position: relative;">
+    <form action="search_history" method="post">
+        <input type="text" id="search_text" name="search_text" placeholder="찾으시는 상품을 검색해보세요!" autocomplete="off" onfocus="showdata()">
+        <div id="search-history" class="search-history">
+            <div id="history-items" class="history-items"></div> <!-- 검색 기록 표시 영역 -->
+        </div>
+        <button type="submit" id="btn_search">
             <img src="${pageContext.request.contextPath}/image/search_img.jpg">
         </button>
     </form>
@@ -229,5 +338,10 @@
     <a href="#">5</a>
     <a href="#">&gt;</a>
 </div>
+
+    <button class="btn_CreatePost" id="btn_CreatePost" onclick="CreatePost()">
+<%--        <i class="text_CreatePost">글 쓰기</i>--%>
+        <a class="text_CreatePost" href="${pageContext.request.contextPath}/create_post"> 글 쓰기</a>
+    </button>
 </body>
 </html>

@@ -35,7 +35,6 @@ public class UserDAO implements UserDAOlmpl {
                 pstmt.executeBatch();
                 conn.commit();
             } catch (ClassNotFoundException | SQLException e) {
-                e.printStackTrace();
             }
         } else{
             System.out.println("userList is null");
@@ -43,7 +42,7 @@ public class UserDAO implements UserDAOlmpl {
     }
 
     @Override
-    public boolean getUserData1(String id, String password) { // 회원 데이터(id,password) 가져오기
+    public boolean getUserloginData(String id, String password) { // 회원 데이터(id,password) 가져오기
         boolean isValidUser = false;
 
         String query = "SELECT COUNT(*) FROM user WHERE ID = ? AND PASSWORD = ?";
@@ -62,13 +61,11 @@ public class UserDAO implements UserDAOlmpl {
                 isValidUser = true;
             }
         } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
         } finally {
             try {
                 if (pstmt != null) pstmt.close();
                 if (conn != null) conn.close();
             } catch (SQLException e) {
-                e.printStackTrace();
             }
         }
 
@@ -76,7 +73,7 @@ public class UserDAO implements UserDAOlmpl {
     }
 
     @Override
-    public User getUserData2(String ID) {
+    public User getUserData(String ID) {
         String query = "SELECT * FROM user WHERE ID = ?";
 
         User user = null;
@@ -108,30 +105,6 @@ public class UserDAO implements UserDAOlmpl {
         return user;
     }
 
-    @Override
-    public User getUserData3(String userId) {
-        // ID를 사용하여 사용자 데이터를 가져오는 로직 구현
-        String query = "SELECT * FROM user WHERE ID = ?";
-
-        User user = null;
-        try {
-            Class.forName(DB_DRIVER);
-            conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-            pstmt = conn.prepareStatement(query);
-
-            pstmt.setString(1, userId);
-            ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) {
-                user = new User();
-                user.setID(rs.getString("ID"));
-                // 사용자 객체의 다른 속성들도 설정
-            }
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
-        }
-        return user;
-    }
-
 
     @Override
     public boolean DelUserData(String ID) {
@@ -155,7 +128,6 @@ public class UserDAO implements UserDAOlmpl {
             }
 
         } catch (ClassNotFoundException|SQLException e) {
-            e.printStackTrace();
         }
         return isDeleted;
     }

@@ -87,12 +87,12 @@
         <input type="text" id="name" name="name" required>
         <label for="id">ID (이메일 형식)</label>
         <div class="id-container">
-            <input type="text" id="id" name="id" required>
-            <p id="at-sign">@</p>
+            <input type="email" id="id" name="id" required>
+<%--            <p id="at-sign">@</p>
             <select id="options" name="options">
                 <option value="naver">naver.com</option>
                 <option value="google">gmail.com</option>
-            </select>
+            </select>--%>
         </div>
         <label for="password">Password</label>
         <input type="password" id="password" name="password" required>

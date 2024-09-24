@@ -11,5 +11,7 @@
         <welcome-file>mypage.jsp</welcome-file>
         <welcome-file>mypage_info.jsp</welcome-file>
         <welcome-file>main.jsp</welcome-file>
+        <welcome-file>main_post.jsp</welcome-file>
+        <welcome-file>create_post.jsp</welcome-file>
     </welcome-file-list>
 </web-app>
